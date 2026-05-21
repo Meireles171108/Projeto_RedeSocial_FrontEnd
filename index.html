@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS — Feed Social</title>
+
+  <!-- Fontes: Oxanium (display terminal) + Plus Jakarta Sans (corpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="./style css/style.css" />
+</head>
+<body>
+
+  <!-- Fundo decorativo: grade e scanline -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-scanline" aria-hidden="true"></div>
+
+  <!-- ====================================================
+       TOPBAR
+  ==================================================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-hexagon-nodes"></i></span>
+        <span class="logo-text">REDE<span class="logo-accent">SOCIAL</span></span>
+        <span class="logo-tag">v2.4.1</span>
+      </div>
+
+      <div class="api-status" id="apiStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Conectando...</span>
+      </div>
+
+      <div class="post-counter">
+        <i class="fa-solid fa-database"></i>
+        <span id="postCount">0</span>&nbsp;posts
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================
+       LAYOUT PRINCIPAL
+  ==================================================== -->
+  <main class="layout">
+
+    <!-- Sidebar: criar post + stats -->
+    <aside class="sidebar">
+
+      <div class="panel">
+        <div class="panel-header">
+          <i class="fa-solid fa-terminal"></i>
+          <span>NOVA PUBLICAÇÃO</span>
+        </div>
+
+        <form class="post-form" id="postForm" autocomplete="off">
+          <div class="field-group">
+            <label class="field-label" for="inputAutor">
+              <i class="fa-solid fa-at"></i> AUTOR
+            </label>
+            <input
+              type="text"
+              id="inputAutor"
+              class="field-input"
+              placeholder="seu_handle"
+              maxlength="40"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inputConteudo">
+              <i class="fa-solid fa-code"></i> MENSAGEM
+            </label>
+            <textarea
+              id="inputConteudo"
+              class="field-textarea"
+              placeholder="Transmita algo para a rede..."
+              maxlength="500"
+              rows="5"
+              required
+            ></textarea>
+            <span class="char-counter" id="charCounter">0 / 500</span>
+          </div>
+
+          <button type="submit" class="btn-publish" id="btnPublish">
+            <span class="btn-text">
+              <i class="fa-solid fa-paper-plane"></i> PUBLICAR
+            </span>
+            <span class="btn-loader" style="display:none;">
+              <i class="fa-solid fa-spinner fa-spin"></i> Enviando...
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Métricas rápidas -->
+      <div class="panel panel-stats">
+        <div class="panel-header">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>MÉTRICAS</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-value" id="statPosts">0</span>
+            <span class="stat-label">Posts</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="statLikes">0</span>
+            <span class="stat-label">Likes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="statComments">0</span>
+            <span class="stat-label">Coment.</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Feed principal -->
+    <section class="feed-area">
+
+      <div class="feed-controls">
+        <div class="feed-title">
+          <i class="fa-solid fa-wave-square"></i>
+          FEED AO VIVO
+        </div>
+        <button class="btn-refresh" id="btnRefresh" title="Recarregar posts">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div class="feed-loading" id="feedLoading">
+        <div class="loading-pulse">
+          <i class="fa-solid fa-circle-nodes fa-spin"></i>
+        </div>
+        <p>Sincronizando com a rede...</p>
+      </div>
+
+      <!-- Vazio -->
+      <div class="feed-empty" id="feedEmpty" style="display:none;">
+        <i class="fa-solid fa-satellite-dish"></i>
+        <p>Nenhum sinal detectado.</p>
+        <small>Seja o primeiro a transmitir.</small>
+      </div>
+
+      <!-- Erro -->
+      <div class="feed-error" id="feedError" style="display:none;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>Falha na conexão com a API.</p>
+        <small id="feedErrorMsg"></small>
+        <button class="btn-retry" onclick="carregarPosts()">
+          <i class="fa-solid fa-rotate-right"></i> Tentar novamente
+        </button>
+      </div>
+
+      <!-- Cards dos posts são inseridos aqui pelo JS -->
+      <div class="posts-list" id="postsList"></div>
+
+    </section>
+  </main>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="../blog/java script/script.js"></script>
+</body>
+</html>
